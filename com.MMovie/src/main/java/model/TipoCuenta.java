@@ -20,4 +20,28 @@ public class TipoCuenta {
 	private int Minutos;
 	@OneToMany(mappedBy="TipoCuenta")
 	private Set<Cuenta> Cuentas=new HashSet<Cuenta>();
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	public String getNombre() {
+		return Nombre;
+	}
+	public void setNombre(String nombre) {
+		Nombre = nombre;
+	}
+	public int getMinutos() {
+		return Minutos;
+	}
+	public void setMinutos(int minutos) {
+		Minutos = minutos;
+	}
+	public Set<Cuenta> getCuentas() {
+		return Cuentas;
+	}
+	public void setCuentas(Set<Cuenta> cuentas) {
+		Cuentas = cuentas;
+	}
 }

@@ -2,7 +2,7 @@ package DAO;
 
 import java.util.List;
 
-import javax.servlet.jsp.tagext.Tag;
+import model.Tag;
 
 import model.Pelicula;
 

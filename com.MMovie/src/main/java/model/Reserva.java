@@ -20,4 +20,28 @@ public class Reserva {
 	@ManyToOne
 	@JoinColumn(name="ID_CUENTA")
 	private Cuenta Cuenta;
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	public Date getFechaReserva() {
+		return FechaReserva;
+	}
+	public void setFechaReserva(Date fechaReserva) {
+		FechaReserva = fechaReserva;
+	}
+	public Pelicula getPelicula() {
+		return Pelicula;
+	}
+	public void setPelicula(Pelicula pelicula) {
+		Pelicula = pelicula;
+	}
+	public Cuenta getCuenta() {
+		return Cuenta;
+	}
+	public void setCuenta(Cuenta cuenta) {
+		Cuenta = cuenta;
+	}
 }

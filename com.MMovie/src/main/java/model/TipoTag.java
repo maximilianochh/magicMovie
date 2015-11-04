@@ -18,4 +18,22 @@ public class TipoTag {
 	private String Nombre;
 	@OneToMany(mappedBy="TipoTag")
 	private Set<Tag> Tags=new HashSet<Tag>();
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	public String getNombre() {
+		return Nombre;
+	}
+	public void setNombre(String nombre) {
+		Nombre = nombre;
+	}
+	public Set<Tag> getTags() {
+		return Tags;
+	}
+	public void setTags(Set<Tag> tags) {
+		Tags = tags;
+	}
 }
