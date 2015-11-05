@@ -76,4 +76,16 @@ public class Pelicula {
 	}
 	@OneToMany(mappedBy="Pelicula")
 	private Set<Reserva> Reservas=new HashSet<Reserva>();
+	public boolean esEstreno() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public int getCantReservas() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public boolean esPopular() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

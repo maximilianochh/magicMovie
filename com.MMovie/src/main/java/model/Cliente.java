@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+
+import Util.ComparatorCuentaPorFecha;
+import interfaces.IAsignacionMExtras;
 @Entity(name="CLIENTE")
 public class Cliente {
 	@Id@GeneratedValue
@@ -62,5 +67,24 @@ public class Cliente {
 		} else if (!NombreUsuario.equals(other.NombreUsuario))
 			return false;
 		return true;
+	}
+	public Cuenta getUltimaCuenta() {
+		List<Cuenta> cuentas= new ArrayList<Cuenta>();
+		cuentas.addAll(this.Cuentas);
+		ComparatorCuentaPorFecha comp=new ComparatorCuentaPorFecha();
+		cuentas.sort(comp);
+		Cuenta ultimaCuenta=cuentas.get(0);
+		return ultimaCuenta;
+	}
+	public boolean addCuenta(Cuenta c) {
+		 if (!this.Cuentas.contains(c)) {
+			 this.Cuentas.add(c);
+			 return true;
+		 }
+		 return false;
+	}
+	public void ReservarPelicula(Pelicula p) {
+		Cuenta ultimaCuenta=this.getUltimaCuenta();
+		ultimaCuenta.ReservarPelicula(p);
 	}
 }

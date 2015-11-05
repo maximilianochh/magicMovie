@@ -20,6 +20,16 @@ public class Reserva {
 	@ManyToOne
 	@JoinColumn(name="ID_CUENTA")
 	private Cuenta Cuenta;
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Cuenta == null) ? 0 : Cuenta.hashCode());
+		result = prime * result + ((FechaReserva == null) ? 0 : FechaReserva.hashCode());
+		result = prime * result + ((Pelicula == null) ? 0 : Pelicula.hashCode());
+		return result;
+	}
 	public int getId() {
 		return Id;
 	}
@@ -31,15 +41,6 @@ public class Reserva {
 	}
 	public void setFechaReserva(Date fechaReserva) {
 		FechaReserva = fechaReserva;
-	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Cuenta == null) ? 0 : Cuenta.hashCode());
-		result = prime * result + ((FechaReserva == null) ? 0 : FechaReserva.hashCode());
-		result = prime * result + ((Pelicula == null) ? 0 : Pelicula.hashCode());
-		return result;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -70,13 +71,19 @@ public class Reserva {
 	public Pelicula getPelicula() {
 		return Pelicula;
 	}
-	public void setPelicula(Pelicula pelicula) {
-		Pelicula = pelicula;
+	public void setPelicula(Pelicula p) {
+		Pelicula = p;
 	}
 	public Cuenta getCuenta() {
 		return Cuenta;
 	}
 	public void setCuenta(Cuenta cuenta) {
 		Cuenta = cuenta;
+	}
+	public Reserva(Cuenta c,Pelicula p) {
+		Date date=new Date();
+		this.setCuenta(c);
+		this.setPelicula(p);
+		this.setFechaReserva(date);
 	}
 }

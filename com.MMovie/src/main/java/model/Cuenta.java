@@ -10,10 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import interfaces.IAsignacionMExtras;
 @Entity(name="CUENTA")
 public class Cuenta {
 	@Id@GeneratedValue
@@ -22,6 +25,30 @@ public class Cuenta {
 	private Date FechaCreacion;
 	@OneToMany(mappedBy="Cuenta")
 	private Set<Reserva> Reservas=new HashSet<Reserva>();
+	private int MinutosExtra;
+	private boolean Estado;
+	@ManyToOne
+	@JoinColumn(name="ID_TIPO_CUENTA")
+	private TipoCuenta TipoCuenta;
+	@ManyToOne
+	@JoinColumn(name="ID_CLIENTE")
+	private Cliente Cliente;
+	private String EstrategiaMinutosExtra;
+	public Date getFechaCreacion() {
+		return FechaCreacion;
+	}
+	public void setFechaCreacion(Date fechaCreacion) {
+		FechaCreacion = fechaCreacion;
+	}
+	public static void main(String [] args){
+		Cuenta c=new Cuenta();
+		Session s=new Configuration().configure().buildSessionFactory().openSession();
+	}
+	public void ReservarPelicula(Pelicula p) {
+		// TODO Auto-generated method stub
+		Reserva r=new Reserva(this,p);
+		this.Reservas.add(r);
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,23 +101,5 @@ public class Cuenta {
 	}
 	public void setCliente(Cliente cliente) {
 		Cliente = cliente;
-	}
-	private int MinutosExtra;
-	private boolean Estado;
-	@ManyToOne
-	@JoinColumn(name="ID_TIPO_CUENTA")
-	private TipoCuenta TipoCuenta;
-	@ManyToOne
-	@JoinColumn(name="ID_CLIENTE")
-	private Cliente Cliente;
-	public Date getFechaCreacion() {
-		return FechaCreacion;
-	}
-	public void setFechaCreacion(Date fechaCreacion) {
-		FechaCreacion = fechaCreacion;
-	}
-	public static void main(String [] args){
-		Cuenta c=new Cuenta();
-		Session s=new Configuration().configure().buildSessionFactory().openSession();
 	}
 }
