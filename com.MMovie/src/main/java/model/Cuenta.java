@@ -22,6 +22,35 @@ public class Cuenta {
 	private Date FechaCreacion;
 	@OneToMany(mappedBy="Cuenta")
 	private Set<Reserva> Reservas=new HashSet<Reserva>();
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Cliente == null) ? 0 : Cliente.hashCode());
+		result = prime * result + ((TipoCuenta == null) ? 0 : TipoCuenta.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cuenta other = (Cuenta) obj;
+		if (Cliente == null) {
+			if (other.Cliente != null)
+				return false;
+		} else if (!Cliente.equals(other.Cliente))
+			return false;
+		if (TipoCuenta == null) {
+			if (other.TipoCuenta != null)
+				return false;
+		} else if (!TipoCuenta.equals(other.TipoCuenta))
+			return false;
+		return true;
+	}
 	public int getId() {
 		return Id;
 	}

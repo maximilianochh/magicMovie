@@ -40,4 +40,27 @@ public class Cliente {
 	public void setApellido(String apellido) {
 		Apellido = apellido;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((NombreUsuario == null) ? 0 : NombreUsuario.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		if (NombreUsuario == null) {
+			if (other.NombreUsuario != null)
+				return false;
+		} else if (!NombreUsuario.equals(other.NombreUsuario))
+			return false;
+		return true;
+	}
 }

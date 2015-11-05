@@ -17,6 +17,29 @@ public class Pelicula {
 	@JoinColumn(name="ID_PELICULA")
 	private int Id;
 	private String Titulo;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Titulo == null) ? 0 : Titulo.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pelicula other = (Pelicula) obj;
+		if (Titulo == null) {
+			if (other.Titulo != null)
+				return false;
+		} else if (!Titulo.equals(other.Titulo))
+			return false;
+		return true;
+	}
 	private int Duracion;
 	private int Calificacion;
 	@OneToMany(mappedBy="Pelicula")
