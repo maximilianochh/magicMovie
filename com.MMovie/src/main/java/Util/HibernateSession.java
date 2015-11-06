@@ -13,7 +13,7 @@ public class HibernateSession {
 		this.session=new Configuration().configure().buildSessionFactory().openSession();
 	}
 	public static HibernateSession getInstance() {
-		if (HibernateSession.getInstance()==null) {
+		if (HibernateSession.instance==null) {
 			HibernateSession hs=new HibernateSession();
 			HibernateSession.setInstance(hs);;
 			return hs;
