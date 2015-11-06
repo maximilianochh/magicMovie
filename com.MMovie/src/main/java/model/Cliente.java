@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import Excepsiones.ExceptionCuentaInactiva;
+import Excepsiones.ExceptionMinutos;
 import Util.ComparatorCuentaPorFecha;
 import interfaces.IAsignacionMExtras;
 @Entity(name="CLIENTE")
@@ -84,12 +85,9 @@ public class Cliente {
 		 }
 		 return false;
 	}
-	public void ReservarPelicula(Pelicula p) throws ExceptionCuentaInactiva {
+	public void ReservarPelicula(Pelicula p) throws ExceptionCuentaInactiva, ExceptionMinutos {
 		Cuenta laUltima=this.getUltimaCuenta();
-		if (!laUltima.isEstado()) {
-			throw new ExceptionCuentaInactiva();
-		}
 		Reserva r=new Reserva(laUltima,p);
-		laUltima.AgregarReserva(r);
+		laUltima.agregarReserva(r);
 	}
 }

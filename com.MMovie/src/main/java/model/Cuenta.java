@@ -2,7 +2,6 @@ package model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,12 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
+import Excepsiones.ExceptionCuentaInactiva;
+import Excepsiones.ExceptionMinutos;
 import Factory.FactoryAsignacion;
 import interfaces.IAsignacionMExtras;
 @Entity(name="CUENTA")
@@ -35,20 +30,30 @@ public class Cuenta {
 	@JoinColumn(name="ID_CLIENTE")
 	private Cliente Cliente;
 	private String EstrategiaMinutosExtra;
+	private int minutosDisponibles;
 	public Date getFechaCreacion() {
 		return FechaCreacion;
 	}
 	public void setFechaCreacion(Date fechaCreacion) {
 		FechaCreacion = fechaCreacion;
 	}
-	public static void main(String [] args){
-		Cuenta c=new Cuenta();
-		Session s=new Configuration().configure().buildSessionFactory().openSession();
+	public boolean puedeReservar(Pelicula p){
+		if(this.getMinutosTotales()>=p.getDuracion()) {
+			return true;
+		}
+		return false;
 	}
-	public void AgregarReserva(Reserva r) {
+	public void agregarReserva(Reserva r) throws ExceptionMinutos, ExceptionCuentaInactiva {
 		// TODO Auto-generated method stub
 		Pelicula peli=r.getPelicula();
+		if (!this.isEstado()) {
+			throw new ExceptionCuentaInactiva();
+		};
+		if (!this.puedeReservar(peli)) {
+			throw new ExceptionMinutos();
+		};
 		this.Reservas.add(r);
+		peli.addReserva(r);
 		this.descontarMinutos(peli);
 		this.agregarMinutosExtras(peli);
 	}
@@ -59,6 +64,25 @@ public class Cuenta {
 		result = prime * result + ((Cliente == null) ? 0 : Cliente.hashCode());
 		result = prime * result + ((TipoCuenta == null) ? 0 : TipoCuenta.hashCode());
 		return result;
+	}
+	public Set<Reserva> getReservas() {
+		return Reservas;
+	}
+	public void setReservas(Set<Reserva> reservas) {
+		Reservas = reservas;
+	}
+	public TipoCuenta getTipoCuenta() {
+		return TipoCuenta;
+	}
+	public void setTipoCuenta(TipoCuenta tipoCuenta) {
+		this.TipoCuenta = tipoCuenta;
+		this.minutosDisponibles=tipoCuenta.getMinutos();
+	}
+	public String getEstrategiaMinutosExtra() {
+		return EstrategiaMinutosExtra;
+	}
+	public void setEstrategiaMinutosExtra(String estrategiaMinutosExtra) {
+		EstrategiaMinutosExtra = estrategiaMinutosExtra;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -102,14 +126,32 @@ public class Cuenta {
 	public Cliente getCliente() {
 		return Cliente;
 	}
+	public int getMinutosDisponibles() {
+		return minutosDisponibles;
+	}
+	public void setMinutosDisponibles(int minutos) {
+		this.minutosDisponibles = minutos;
+	}
 	public void setCliente(Cliente cliente) {
 		Cliente = cliente;
 	}
 	private void descontarMinutos(Pelicula p) {
-		this.MinutosExtra-=p.getDuracion();
+		int diferencia=this.getMinutosDisponibles()-p.getDuracion();
+		if (this.getMinutosDisponibles()<0) {
+			this.setMinutosDisponibles(0);
+			diferencia=diferencia+this.getMinutosExtra();
+			this.setMinutosExtra(diferencia);
+		} else {
+			this.setMinutosDisponibles(diferencia);
+		}
 	}
 	private void agregarMinutosExtras(Pelicula p) {
 		IAsignacionMExtras asig=FactoryAsignacion.getInstance(this.EstrategiaMinutosExtra);
 		this.MinutosExtra+=asig.getMinutosExtras(p);
+	}
+	public int getMinutosTotales() {
+		// TODO Auto-generated method stub
+		int mTotales=this.getMinutosDisponibles()+this.getMinutosExtra();
+		return mTotales;
 	}
 }

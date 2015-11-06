@@ -7,16 +7,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-
-import Util.ComparatorReservasPorFecha;
 @Entity(name="PELICULA")
 public class Pelicula {
-	public static final int indicadorDePopularidad=1000;
+	public static final int indicadorDePopularidad=10;
 	@Id@GeneratedValue
 	@JoinColumn(name="ID_PELICULA")
 	private int Id;
 	private String Titulo;
 	private Date fechaEstreno;
+	private int Duracion;
+	private int Calificacion;
+	@OneToMany(mappedBy="Pelicula")
+	private Set<Reserva> Reservas=new HashSet<Reserva>();
+	@OneToMany(mappedBy="Pelicula")
+	private Set<Tag> Tags=new HashSet<Tag>();
 	public Date getFechaEstreno() {
 		return fechaEstreno;
 	}
@@ -46,10 +50,6 @@ public class Pelicula {
 			return false;
 		return true;
 	}
-	private int Duracion;
-	private int Calificacion;
-	@OneToMany(mappedBy="Pelicula")
-	private Set<Tag> Tags=new HashSet<Tag>();
 	public int getDuracion() {
 		return Duracion;
 	}
@@ -80,8 +80,6 @@ public class Pelicula {
 	public void setTitulo(String titulo) {
 		Titulo = titulo;
 	}
-	@OneToMany(mappedBy="Pelicula")
-	private Set<Reserva> Reservas=new HashSet<Reserva>();
 	@SuppressWarnings("deprecation")
 	public boolean esEstreno() {
 		// TODO Auto-generated method stub
@@ -104,9 +102,15 @@ public class Pelicula {
 	}
 	public boolean esPopular() {
 		// TODO Auto-generated method stub
-		if (this.getCantReservas()<=1000) {
+		if (this.getCantReservas()<=Pelicula.indicadorDePopularidad) {
 			return false;
 		}
 		return true;
+	}
+	public void addReserva(Reserva r) {
+		this.Reservas.add(r);
+	}
+	public Pelicula() {
+		this.setFechaEstreno(new Date());
 	}
 }

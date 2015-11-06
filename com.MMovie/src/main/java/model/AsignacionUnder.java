@@ -2,7 +2,7 @@ package model;
 
 import interfaces.IAsignacionMExtras;
 
-public class AsignacionUnderground implements IAsignacionMExtras {
+public class AsignacionUnder implements IAsignacionMExtras {
 	private int incMinutos=10;
 	public int getMinutosExtras(Pelicula p) {
 		// TODO Auto-generated method stub
