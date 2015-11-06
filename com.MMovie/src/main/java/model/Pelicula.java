@@ -1,22 +1,28 @@
 package model;
-
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import Util.ComparatorReservasPorFecha;
 @Entity(name="PELICULA")
 public class Pelicula {
+	public static final int indicadorDePopularidad=1000;
 	@Id@GeneratedValue
 	@JoinColumn(name="ID_PELICULA")
 	private int Id;
 	private String Titulo;
+	private Date fechaEstreno;
+	public Date getFechaEstreno() {
+		return fechaEstreno;
+	}
+	public void setFechaEstreno(Date fechaEstreno) {
+		this.fechaEstreno = fechaEstreno;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -76,16 +82,31 @@ public class Pelicula {
 	}
 	@OneToMany(mappedBy="Pelicula")
 	private Set<Reserva> Reservas=new HashSet<Reserva>();
+	@SuppressWarnings("deprecation")
 	public boolean esEstreno() {
 		// TODO Auto-generated method stub
-		return false;
+		Date today=new Date();
+		int difMonth=today.getMonth()-this.fechaEstreno.getMonth();
+		if (difMonth!=0) {
+			if (difMonth>1) {
+				return false;
+			}
+			int difDay=today.getDay()-this.fechaEstreno.getDay();
+			if (difDay>0) {
+				return false;
+			}
+		}
+		return true;
 	}
 	public int getCantReservas() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.Reservas.size();
 	}
 	public boolean esPopular() {
 		// TODO Auto-generated method stub
-		return false;
+		if (this.getCantReservas()<=1000) {
+			return false;
+		}
+		return true;
 	}
 }

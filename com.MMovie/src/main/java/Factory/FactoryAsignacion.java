@@ -1,18 +1,18 @@
 package Factory;
 import interfaces.IAsignacionMExtras;
 import model.AsignacionClientesActualizados;
-import model.AsignacionMainStream;
+import model.AsignacionUnderground;
+
 public class FactoryAsignacion {
-	public IAsignacionMExtras getInstance(String EstrategyType) {
+	public static IAsignacionMExtras getInstance(String EstrategyType) {
+		IAsignacionMExtras asignacion=new AsignacionClientesActualizados();
 		if (EstrategyType.equalsIgnoreCase("Actualizados")) {
-			IAsignacionMExtras asignacion=new AsignacionClientesActualizados();
 			return asignacion;
 		}
 		if (EstrategyType.equalsIgnoreCase("Actualizados")) {
-			IAsignacionMExtras asignacion=new AsignacionClientesActualizados();
+			asignacion=new AsignacionUnderground();
 			return asignacion;
 		}
-		IAsignacionMExtras asignacion=new AsignacionMainStream();
 		return asignacion;
 	}
 }

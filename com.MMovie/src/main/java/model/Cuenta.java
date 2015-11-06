@@ -16,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import Factory.FactoryAsignacion;
 import interfaces.IAsignacionMExtras;
 @Entity(name="CUENTA")
 public class Cuenta {
@@ -44,10 +45,12 @@ public class Cuenta {
 		Cuenta c=new Cuenta();
 		Session s=new Configuration().configure().buildSessionFactory().openSession();
 	}
-	public void ReservarPelicula(Pelicula p) {
+	public void AgregarReserva(Reserva r) {
 		// TODO Auto-generated method stub
-		Reserva r=new Reserva(this,p);
+		Pelicula peli=r.getPelicula();
 		this.Reservas.add(r);
+		this.descontarMinutos(peli);
+		this.agregarMinutosExtras(peli);
 	}
 	@Override
 	public int hashCode() {
@@ -101,5 +104,12 @@ public class Cuenta {
 	}
 	public void setCliente(Cliente cliente) {
 		Cliente = cliente;
+	}
+	private void descontarMinutos(Pelicula p) {
+		this.MinutosExtra-=p.getDuracion();
+	}
+	private void agregarMinutosExtras(Pelicula p) {
+		IAsignacionMExtras asig=FactoryAsignacion.getInstance(this.EstrategiaMinutosExtra);
+		this.MinutosExtra+=asig.getMinutosExtras(p);
 	}
 }

@@ -3,10 +3,8 @@ package model;
 import interfaces.IAsignacionMExtras;
 
 public class AsignacionUnderground implements IAsignacionMExtras {
-
 	private int incMinutos=10;
-
-	public int getPuntosExtras(Pelicula p) {
+	public int getMinutosExtras(Pelicula p) {
 		// TODO Auto-generated method stub
 		if (p.esEstreno()) {
 			return 0;

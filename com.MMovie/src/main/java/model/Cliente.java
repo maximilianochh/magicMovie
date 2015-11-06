@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
+import Excepsiones.ExceptionCuentaInactiva;
 import Util.ComparatorCuentaPorFecha;
 import interfaces.IAsignacionMExtras;
 @Entity(name="CLIENTE")
@@ -83,8 +84,12 @@ public class Cliente {
 		 }
 		 return false;
 	}
-	public void ReservarPelicula(Pelicula p) {
-		Cuenta ultimaCuenta=this.getUltimaCuenta();
-		ultimaCuenta.ReservarPelicula(p);
+	public void ReservarPelicula(Pelicula p) throws ExceptionCuentaInactiva {
+		Cuenta laUltima=this.getUltimaCuenta();
+		if (!laUltima.isEstado()) {
+			throw new ExceptionCuentaInactiva();
+		}
+		Reserva r=new Reserva(laUltima,p);
+		laUltima.AgregarReserva(r);
 	}
 }
