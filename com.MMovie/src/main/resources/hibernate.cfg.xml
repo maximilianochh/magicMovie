@@ -19,15 +19,14 @@
       root
    </property>
    <property name="hibernate.connection.password">
-      root
    </property>
    <property name="hbm2ddl.auto">create</property>
-   <mapping class="model.Cuenta"/>
-   <mapping class="model.TipoCuenta"/>
-   <mapping class="model.Cliente"/>
-   <mapping class="model.Pelicula"/>
-   <mapping class="model.Reserva"/>
-   <mapping class="model.Tag"/>
-   <mapping class="model.TipoTag"/>
+   <mapping class="com.magicMovie.model.TipoCuenta"/>
+   <mapping class="com.magicMovie.model.Cliente"/>
+   <mapping class="com.magicMovie.model.Cuenta"/>
+   <mapping class="com.magicMovie.model.Pelicula"/>
+   <mapping class="com.magicMovie.model.Reserva"/>
+   <mapping class="com.magicMovie.model.Tag"/>
+   <mapping class="com.magicMovie.model.TipoTag"/>
 </session-factory>
 </hibernate-configuration>
